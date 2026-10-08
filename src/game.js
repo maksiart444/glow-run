@@ -5,7 +5,7 @@ import {
   SCORE, START_LIVES, MAX_LIVES, EXTRA_LIFE_SCORE, LEVELS_PER_WORLD, STORY_LEVELS,
   TIMING, HIT_RADIUS, difficulty,
 } from './config.js';
-import { Maze, DIRS, NONE, opposite } from './maze.js';
+import { Maze, DIRS, NONE, OPEN, opposite } from './maze.js';
 import { Hero, Enemy, ROLES } from './entities.js';
 import { WORLDS } from './worlds/index.js';
 
@@ -48,6 +48,7 @@ export class Game {
     this.dotsLeft = this.maze.totalDots;
     this.dotsEaten = 0;
     this.itemsSpawned = 0;
+    this.bonusPower = null;
     this.d = difficulty(this.level);
     this.resetActors();
     this.setState('ready');
@@ -169,6 +170,15 @@ export class Game {
       }
     }
 
+    // Дополнительный бонус (появляется после съеденного врага)
+    const bp = this.bonusPower;
+    if (bp && cx === bp.x && cy === bp.y) {
+      this.bonusPower = null;
+      this.addScore(SCORE.power);
+      this.startFright();
+      this.emit('power', { x: cx, y: cy });
+    }
+
     if (this.item) {
       this.item.t -= dt;
       if (cx === this.item.x && cy === this.item.y) {
@@ -249,6 +259,24 @@ export class Game {
     e.toEyes();
     this.setState('eat');
     this.emit('eat', { ...at, points, enemy: e, combo: this.combo });
+    this.spawnBonusPower();
+  }
+
+  // Съел врага — где-то подальше от героя появляется новый бонус (только один за раз).
+  spawnBonusPower() {
+    const { maze } = this;
+    if (this.bonusPower) return;
+    const spots = [];
+    for (let i = 0; i < maze.cells.length; i++) {
+      const x = i % maze.w, y = Math.floor(i / maze.w);
+      if (maze.cells[i] !== OPEN || maze.dots[i] === 2 || maze.tunnel[i]) continue;
+      if ((x === maze.exit.x && y === maze.exit.y) || (x === maze.itemSpot.x && y === maze.itemSpot.y)) continue;
+      if (this.heroMap[i] >= 6 && this.heroMap[i] < 30000) spots.push(i);
+    }
+    if (!spots.length) return;
+    const i = spots[Math.floor(Math.random() * spots.length)];
+    this.bonusPower = { x: i % maze.w, y: Math.floor(i / maze.w) };
+    this.emit('power-spawn', { x: i % maze.w, y: Math.floor(i / maze.w) });
   }
 
   addTrap(x, y) {

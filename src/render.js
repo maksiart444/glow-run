@@ -282,6 +282,12 @@ export class Renderer {
       }
     }
 
+    if (game.bonusPower) {
+      const ps = this.powerSprite, size = ps.width * (pulse + 0.1);
+      const bx = (game.bonusPower.x + 0.5) * s, by = (game.bonusPower.y + 0.5) * s;
+      ctx.drawImage(ps, bx - size / 2, by - size / 2, size, size);
+    }
+
     ctx.save();
     ctx.beginPath(); ctx.rect(-s * 0.1, -s * 0.1, this.mw + s * 0.2, this.mh + s * 0.2); ctx.clip();
 

@@ -193,6 +193,10 @@ function handleEvent(type, d) {
       fx.shake(0.08, 0.2);
       if (!demo) { sound.play('power', world); sound.setFright(true); vibrate(30); }
       break;
+    case 'power-spawn':
+      fx.ring(d.x, d.y, world.colors.power, 2.5, 0.8, 0.15);
+      fx.burst(d.x, d.y, world.colors.power, 16, 4, 0.7, 0.07);
+      break;
     case 'fright-end':
       sound.setFright(false);
       break;
