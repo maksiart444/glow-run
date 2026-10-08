@@ -38,7 +38,7 @@ export const TIMING = {
 // Сложность растёт с каждым уровнем (level = 0, 1, 2, ...).
 export function difficulty(level) {
   const d = Math.min(level, 12);
-  const hero = Math.min(6.6 + 0.14 * d, 8.2);          // клеток в секунду
+  const hero = Math.min(5 + 0.12 * d, 6.4);           // клеток в секунду
   return {
     heroSpeed: hero,
     heroFrightSpeed: hero * 1.08,
