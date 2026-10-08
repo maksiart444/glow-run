@@ -4,7 +4,7 @@
 // не застревает в стенах.
 
 import { DIRS, NONE, LEFT, opposite } from './maze.js';
-import { CORNER_WINDOW, TIMING } from './config.js';
+import { CORNER_LATE, CORNER_EARLY, TIMING } from './config.js';
 
 class Actor {
   constructor() {
@@ -65,7 +65,13 @@ export class Hero extends Actor {
     this.angle = Math.PI;
     this.slow = 0;
     this.moving = false;
+    this.ox = 0;   // смещение картинки при «срезании угла» — плавно уходит в ноль
+    this.oy = 0;
   }
+
+  // Где рисовать героя (логика игры использует x/y без смещения).
+  get drawX() { return this.x + this.ox; }
+  get drawY() { return this.y + this.oy; }
 
   // want — направление, которое хочет игрок (или null). Возвращает true, если оно применено.
   update(dt, maze, want, speed) {
@@ -76,10 +82,24 @@ export class Hero extends Actor {
       if (want === opposite(this.dir)) {
         this.reverse(maze);           // развернуться можно всегда
         used = true;
-      } else if (this.prog > 0 && this.prog < CORNER_WINDOW && this.canGo(maze, want)) {
-        this.prog = 0;                 // чуть проскочил поворот — возвращаемся и сворачиваем
+      } else if (this.prog > 0 && this.prog <= CORNER_LATE && this.canGo(maze, want)) {
+        // Чуть проскочил поворот — сворачиваем, а картинка плавно «срезает угол»
+        this.ox += this.dir.x * this.prog;
+        this.oy += this.dir.y * this.prog;
+        this.prog = 0;
+      } else if (this.prog >= 1 - CORNER_EARLY) {
+        // Почти доехал до поворота — сворачиваем чуть раньше центра клетки
+        const nx = maze.wrapX(this.tx + this.dir.x), ny = maze.wrapY(this.ty + this.dir.y);
+        if (maze.isOpen(nx + want.x, ny + want.y)) {
+          this.ox += this.dir.x * (this.prog - 1);
+          this.oy += this.dir.y * (this.prog - 1);
+          this.tx = nx; this.ty = ny; this.prog = 0;
+        }
       }
     }
+    const k = Math.min(1, dt * 14);
+    this.ox -= this.ox * k;
+    this.oy -= this.oy * k;
 
     this.advance(maze, speed * dt, () => {
       if (want && !used && this.canGo(maze, want)) { used = true; return want; }

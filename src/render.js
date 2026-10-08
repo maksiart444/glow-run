@@ -356,7 +356,7 @@ export class Renderer {
       k = Math.max(0, Math.min(1, (game.stateT - TIMING.deathFreeze) / (TIMING.deathAnim * 0.7)));
       if (k >= 1) return;
     }
-    this.drawAt(hero.x, hero.y, () => {
+    this.drawAt(hero.drawX, hero.drawY, () => {
       if (k > 0) {
         ctx.rotate(k * 9);
         ctx.scale(1 - k, 1 - k);

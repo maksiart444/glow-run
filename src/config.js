@@ -17,9 +17,10 @@ export const SCORE = {
   item: [100, 300, 500, 700, 1000, 1500, 2000, 3000, 5000],
 };
 
-export const TURN_BUFFER = 0.5;    // сколько секунд помнится нажатое направление
-export const CORNER_WINDOW = 0.2;  // если чуть проскочил поворот (доля клетки) — всё равно свернёт
-export const HIT_RADIUS = 0.62;    // расстояние (в клетках), на котором враг ловит героя
+export const TURN_BUFFER = 0.6;    // сколько секунд помнится нажатое направление
+export const CORNER_LATE = 0.45;   // проскочил поворот меньше чем на полклетки — всё равно свернёт
+export const CORNER_EARLY = 0.4;   // не доехал до поворота меньше чем полклетки — свернёт сразу
+export const HIT_RADIUS = 0.5;     // расстояние (в клетках), на котором враг ловит героя
 
 export const TIMING = {
   ready: 2.2,        // «Готов?» перед стартом
@@ -42,19 +43,19 @@ export function difficulty(level) {
     heroSpeed: hero,
     heroFrightSpeed: hero * 1.08,
     heroSlowFactor: 0.55,
-    enemySpeed: hero * Math.min(0.8 + 0.025 * d, 0.97),
+    enemySpeed: hero * Math.min(0.74 + 0.025 * d, 0.95),
     frightSpeed: hero * 0.55,
     tunnelSpeed: hero * 0.45,
     eyesSpeed: hero * 2,
     elroyBoost: 1.06,                                  // Охотник ускоряется, когда точек мало
     patrolDash: 1.35,
-    frightTime: Math.max(1.5, 7 - 0.55 * d),
+    frightTime: Math.max(2, 8 - 0.55 * d),
     flashTime: 2,
-    release: [0, 1.5, 5, 9].map(t => t * Math.max(0.35, 1 - 0.07 * d)),
+    release: [0, 2, 6, 11].map(t => t * Math.max(0.35, 1 - 0.07 * d)),
     trapEvery: Math.max(6, 11 - 0.5 * d),
     // Враги то «гуляют» по своим углам, то «охотятся». Последняя охота бесконечна.
     modes: [
-      ['scatter', Math.max(3, 7 - 0.4 * d)],
+      ['scatter', Math.max(3, 8 - 0.4 * d)],
       ['chase', 20 + d],
       ['scatter', Math.max(2.5, 6 - 0.4 * d)],
       ['chase', 22 + d],
