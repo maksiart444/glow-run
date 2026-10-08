@@ -3,17 +3,17 @@
 import { WORLDS } from './worlds/index.js';
 import { drawIcon, renderPreview } from './render.js';
 import { RIGHT } from './maze.js';
+import { LEVELS_PER_WORLD } from './config.js';
 
 const $ = id => document.getElementById(id);
 
 const ROLE_TEXT = {
-  hunter: ['Охотник', 'Всегда идёт к тебе кратчайшим путём. Когда точек остаётся мало — ускоряется.'],
-  interceptor: ['Перехватчик', 'Бежит туда, где ты окажешься через пару секунд, и отрезает путь.'],
-  patrol: ['Патрульный', 'Обходит свой участок. Увидит тебя по прямой — делает рывок.'],
-  chaos: ['Хаотик', 'Бродит непредсказуемо и оставляет ловушки, которые замедляют.'],
+  hunter: ['Мисливець', 'Завжди йде до тебе найкоротшим шляхом. Коли точок лишається мало — пришвидшується.'],
+  interceptor: ['Перехоплювач', 'Біжить туди, де ти опинишся за пару секунд, і відрізає шлях.'],
+  patrol: ['Патрульний', 'Обходить свою ділянку. Побачить тебе по прямій — робить ривок.'],
+  chaos: ['Хаотик', 'Блукає непередбачувано й залишає пастки, які сповільнюють.'],
 };
 
-const LOCK_SVG = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></svg>';
 
 const iconHero = { angle: 0, moving: false, face: RIGHT };
 
@@ -77,7 +77,7 @@ export class UI {
     this.toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
   }
 
-  setMenuBest(best) { $('menu-best').textContent = best.toLocaleString('ru-RU'); }
+  setMenuBest(best) { $('menu-best').textContent = best.toLocaleString('uk-UA'); }
 
   // ---------- Панель очков (обновляем только то, что изменилось) ----------
 
@@ -88,8 +88,8 @@ export class UI {
   }
 
   updateHud(game) {
-    this.set('score', game.score.toLocaleString('ru-RU'));
-    this.set('best', Math.max(game.best, game.score).toLocaleString('ru-RU'));
+    this.set('score', game.score.toLocaleString('uk-UA'));
+    this.set('best', Math.max(game.best, game.score).toLocaleString('uk-UA'));
     this.set('world-name', game.world.name);
     this.set('level-name', game.levelName);
     const on = game.fright > 0;
@@ -114,18 +114,20 @@ export class UI {
     const grid = $('world-grid');
     grid.innerHTML = '';
     WORLDS.forEach((world, i) => {
-      const locked = i > store.unlocked;
+      const done = Math.min(store.progress[i] || 0, LEVELS_PER_WORLD);
       const card = document.createElement('button');
-      card.className = 'world-card' + (locked ? ' locked' : '');
+      card.className = 'world-card';
       card.style.setProperty('--card-accent', world.colors.accent);
       card.style.setProperty('--card-glow', world.colors.accent + '88');
-      if (!locked) { card.dataset.action = 'world'; card.dataset.world = i; }
+      card.dataset.action = 'world';
+      card.dataset.world = i;
       const canvas = document.createElement('canvas');
       card.appendChild(canvas);
+      const status = done >= LEVELS_PER_WORLD ? '✓ Пройдено' : `Пройдено ${done}/${LEVELS_PER_WORLD}`;
       card.insertAdjacentHTML('beforeend', `
-        ${locked ? `<div class="lock">${LOCK_SVG}</div>` : ''}
+        <span class="progress${done >= LEVELS_PER_WORLD ? ' done' : ''}">${status}</span>
         <div class="info"><h4>${i + 1}. ${world.name}</h4>
-        <p>${locked ? `Пройди мир «${WORLDS[i - 1].name}»` : world.subtitle.split('.')[0]}</p></div>`);
+        <p>${world.subtitle.split('.')[0]}</p></div>`);
       grid.appendChild(card);
       requestAnimationFrame(() => {
         const w = card.clientWidth || 160;
@@ -133,10 +135,10 @@ export class UI {
       });
     });
     const endless = document.createElement('button');
-    endless.className = 'world-card endless' + (store.endless ? '' : ' locked');
-    if (store.endless) endless.dataset.action = 'endless';
-    endless.innerHTML = `<div class="info"><h4>∞ Бесконечный режим</h4>
-      <p>${store.endless ? 'Миры идут по кругу, скорость растёт. Сколько продержишься?' : 'Откроется, когда пройдёшь все три мира.'}</p></div>`;
+    endless.className = 'world-card endless';
+    endless.dataset.action = 'endless';
+    endless.innerHTML = `<div class="info"><h4>∞ Нескінченний режим</h4>
+      <p>Світи йдуть по колу, а швидкість зростає. Скільки протримаєшся?</p></div>`;
     grid.appendChild(endless);
   }
 
@@ -176,25 +178,21 @@ export class UI {
     preview.classList.remove('show');
     let auto = 1.8;
     $('clear-kicker').textContent = info.label;
-    $('clear-score').textContent = info.score.toLocaleString('ru-RU');
+    $('clear-score').textContent = info.score.toLocaleString('uk-UA');
     const next = WORLDS[info.nextWorldIndex];
-    if (info.endlessNew) {
-      $('clear-title').textContent = 'Все миры пройдены!';
-      $('clear-text').textContent = 'Открыт бесконечный режим: миры идут по кругу, а скорость растёт.';
+    if (info.storyDone) {
+      $('clear-title').textContent = 'Усі світи пройдено!';
+      $('clear-text').textContent = 'Далі — нескінченний режим: світи йдуть по колу, а швидкість зростає.';
       auto = 0;
-    } else if (info.unlockedNew) {
-      $('clear-title').textContent = 'Открыт новый мир!';
-      $('clear-text').textContent = `${next.name}. ${next.subtitle}`;
+    } else if (info.worldDone) {
+      $('clear-title').textContent = 'Світ пройдено!';
+      $('clear-text').textContent = `Далі — ${next.name}. ${next.subtitle}`;
       preview.classList.add('show');
       renderPreview(preview, next, mazes[info.nextWorldIndex], 220, 293);
       auto = 0;
-    } else if (info.worldDone) {
-      $('clear-title').textContent = 'Мир пройден!';
-      $('clear-text').textContent = `Следующий мир: ${next.name}`;
-      auto = 2.6;
     } else {
-      $('clear-title').textContent = 'Уровень пройден!';
-      $('clear-text').textContent = 'Враги станут быстрее. Держись!';
+      $('clear-title').textContent = 'Рівень пройдено!';
+      $('clear-text').textContent = 'Вороги стануть швидшими. Тримайся!';
     }
     this.show('clear');
     clearTimeout(this.clearTimer);
@@ -202,9 +200,9 @@ export class UI {
   }
 
   showOver({ score, record, label }) {
-    $('over-score').textContent = score.toLocaleString('ru-RU');
+    $('over-score').textContent = score.toLocaleString('uk-UA');
     $('over-record').style.display = record ? '' : 'none';
-    $('over-info').textContent = `Последний уровень: ${label}`;
+    $('over-info').textContent = `Останній рівень: ${label}`;
     this.show('over');
   }
 }

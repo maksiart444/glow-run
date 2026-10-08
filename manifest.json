@@ -1,8 +1,8 @@
 {
   "name": "GLOW RUN",
   "short_name": "GLOW RUN",
-  "description": "Неоновая аркада-лабиринт с тремя мирами.",
-  "lang": "ru",
+  "description": "Неонова аркада-лабіринт із трьома світами.",
+  "lang": "uk",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

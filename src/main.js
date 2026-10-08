@@ -8,7 +8,6 @@ import { Input } from './input.js';
 import { Sound } from './audio.js';
 import { UI } from './ui.js';
 import { loadStore, saveStore } from './storage.js';
-import { WORLDS } from './worlds/index.js';
 
 const store = loadStore();
 const canvas = document.getElementById('game');
@@ -104,17 +103,13 @@ function handleAction(action, data) {
   sound.unlock();
   if (action !== 'toggle') sound.play('click');
   switch (action) {
-    case 'play': startGame(0); break;
+    case 'play': startGame(store.lastWorld * LEVELS_PER_WORLD); break;
     case 'worlds':
       ui.renderWorlds(store, game.mazes);
       ui.show('worlds', true);
       break;
-    case 'world': {
-      const i = Number(data.world);
-      if (i <= store.unlocked) startGame(i * LEVELS_PER_WORLD);
-      break;
-    }
-    case 'endless': if (store.endless) startGame(STORY_LEVELS); break;
+    case 'world': startGame(Number(data.world) * LEVELS_PER_WORLD); break;
+    case 'endless': startGame(STORY_LEVELS); break;
     case 'settings':
       ui.renderSettings(store.settings);
       ui.show('settings', true);
@@ -158,7 +153,7 @@ input.onPause = () => {
 };
 
 input.onConfirm = e => {
-  if (ui.current === 'menu') { e.preventDefault(); startGame(0); }
+  if (ui.current === 'menu') { e.preventDefault(); startGame(store.lastWorld * LEVELS_PER_WORLD); }
   else if (ui.current === 'clear') { e.preventDefault(); nextLevel(); }
   else if (ui.current === 'over') { e.preventDefault(); startGame(startLevel); }
   else if (ui.current === 'pause') { e.preventDefault(); resume(); }
@@ -238,7 +233,7 @@ function handleEvent(type, d) {
     case 'trap':
       fx.burst(d.x, d.y, world.enemies.chaos.color, 16, 4, 0.6);
       fx.shake(0.1, 0.2);
-      if (!demo) { sound.play('trap'); vibrate(25); ui.toast(`Осторожно: ${world.trapName}!`); }
+      if (!demo) { sound.play('trap'); vibrate(25); ui.toast(`Обережно: ${world.trapName}!`); }
       break;
     case 'alert':
       fx.ring(d.enemy.x, d.enemy.y, world.enemies.patrol.color, 2.5, 0.5, 0.1);
@@ -247,7 +242,7 @@ function handleEvent(type, d) {
     case 'extra-life':
       sound.play('extra');
       vibrate([30, 30, 30]);
-      ui.toast('+1 жизнь!');
+      ui.toast('+1 життя!');
       ui.renderLives(world, game.lives);
       break;
     case 'clear':
@@ -265,20 +260,17 @@ function handleEvent(type, d) {
 
 function onLevelClear(d) {
   store.best = Math.max(store.best, game.score);
-  let unlockedNew = false, endlessNew = false;
-  const next = d.worldIndex + 1;
-  if (d.worldDone && d.finished < STORY_LEVELS && next < WORLDS.length && store.unlocked < next) {
-    store.unlocked = next;
-    unlockedNew = true;
-  }
-  if (d.storyDone && !store.endless) {
-    store.endless = true;
-    endlessNew = true;
+  if (d.finished < STORY_LEVELS) {
+    const levelInWorld = (d.finished % LEVELS_PER_WORLD) + 1;
+    store.progress[d.worldIndex] = Math.max(store.progress[d.worldIndex] || 0, levelInWorld);
   }
   saveStore(store);
-  if (unlockedNew || endlessNew) sound.play('unlock');
+  if (d.worldDone) sound.play('unlock');
   ui.showClear({
-    ...d, unlockedNew, endlessNew, score: game.score, label: `Уровень ${levelLabel(d.finished)}`,
+    ...d,
+    worldDone: d.worldDone && d.finished < STORY_LEVELS,
+    score: game.score,
+    label: `Рівень ${levelLabel(d.finished)}`,
   }, game.mazes, nextLevel);
 }
 

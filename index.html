@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#07030f">
-  <meta name="description" content="GLOW RUN — неоновая аркада-лабиринт с тремя мирами. Играй в браузере на компьютере и телефоне.">
+  <meta name="description" content="GLOW RUN — неонова аркада-лабіринт із трьома світами. Грай у браузері на комп’ютері й телефоні.">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GLOW RUN">
   <meta property="og:title" content="GLOW RUN">
-  <meta property="og:description" content="Неоновая аркада-лабиринт с тремя мирами.">
+  <meta property="og:description" content="Неонова аркада-лабіринт із трьома світами.">
   <meta property="og:image" content="assets/preview.png">
   <title>GLOW RUN</title>
   <link rel="manifest" href="manifest.json">
@@ -23,7 +23,7 @@
 </head>
 <body>
   <div id="app">
-    <canvas id="game" aria-label="Игровое поле"></canvas>
+    <canvas id="game" aria-label="Ігрове поле"></canvas>
     <div id="safe-probe"></div>
 
     <header id="hud-top" class="hud hidden">
@@ -32,7 +32,7 @@
         <span class="num" id="score">0</span>
       </div>
       <div class="stat mid">
-        <span class="label" id="world-name">Cyber Glow</span>
+        <span class="label" id="world-name">Кібермісто</span>
         <span class="num small" id="level-name">1-1</span>
       </div>
       <div class="stat right">
@@ -55,25 +55,25 @@
     <section class="screen" id="scr-menu">
       <div class="menu">
         <h1 class="logo"><span>GLOW</span><span>RUN</span></h1>
-        <p class="tagline">Неоновая аркада-лабиринт · 3 мира</p>
+        <p class="tagline">Неонова аркада-лабіринт · 3 світи</p>
         <div class="buttons">
-          <button class="btn primary" data-action="play">Играть</button>
-          <button class="btn" data-action="worlds">Миры</button>
+          <button class="btn primary" data-action="play">Грати</button>
+          <button class="btn" data-action="worlds">Світи</button>
           <div class="row">
-            <button class="btn" data-action="settings">Настройки</button>
-            <button class="btn" data-action="howto">Как играть</button>
+            <button class="btn" data-action="settings">Налаштування</button>
+            <button class="btn" data-action="howto">Як грати</button>
           </div>
         </div>
         <p class="menu-best">Рекорд: <b id="menu-best">0</b></p>
       </div>
-      <p class="hint only-mouse">Стрелки или WASD — движение · P — пауза · Enter — играть</p>
-      <p class="hint only-touch">Свайпай в любую сторону, чтобы повернуть</p>
+      <p class="hint only-mouse">Стрілки або WASD — рух · P — пауза · Enter — грати</p>
+      <p class="hint only-touch">Свайпай у будь-який бік, щоб повернути</p>
     </section>
 
     <section class="screen dim" id="scr-worlds">
       <div class="panel wide">
-        <h2>Миры</h2>
-        <p class="sub">Пройди 3 уровня мира — откроется следующий.</p>
+        <h2>Світи</h2>
+        <p class="sub">Обери світ. У кожному — 3 рівні, після них гра веде в наступний світ.</p>
         <div class="world-grid" id="world-grid"></div>
         <button class="btn ghost" data-action="back">Назад</button>
       </div>
@@ -81,16 +81,16 @@
 
     <section class="screen dim" id="scr-settings">
       <div class="panel">
-        <h2>Настройки</h2>
+        <h2>Налаштування</h2>
         <div class="settings">
           <button class="toggle" data-action="toggle" data-key="sound"><span>Звуки</span><i></i></button>
-          <button class="toggle" data-action="toggle" data-key="music"><span>Музыка</span><i></i></button>
-          <button class="toggle" data-action="toggle" data-key="vibration"><span>Вибрация</span><i></i></button>
+          <button class="toggle" data-action="toggle" data-key="music"><span>Музика</span><i></i></button>
+          <button class="toggle" data-action="toggle" data-key="vibration"><span>Вібрація</span><i></i></button>
           <div class="segment">
-            <span>Графика</span>
+            <span>Графіка</span>
             <div>
-              <button data-action="quality" data-value="high">Красиво</button>
-              <button data-action="quality" data-value="low">Экономно</button>
+              <button data-action="quality" data-value="high">Гарно</button>
+              <button data-action="quality" data-value="low">Економно</button>
             </div>
           </div>
         </div>
@@ -100,18 +100,18 @@
 
     <section class="screen dim" id="scr-howto">
       <div class="panel wide scroll">
-        <h2>Как играть</h2>
+        <h2>Як грати</h2>
         <div class="howto">
-          <p><b>Цель:</b> собери все светящиеся точки в лабиринте и не попадись врагам.</p>
-          <p class="only-mouse"><b>Управление:</b> стрелки или WASD. Нажми стрелку заранее — герой свернёт сам, когда появится проход. P или Esc — пауза.</p>
-          <p class="only-touch"><b>Управление:</b> свайпай пальцем в любом месте экрана. Можно свайпнуть заранее — герой свернёт сам, когда появится проход.</p>
-          <p><b>Бонус</b> <span id="howto-power"></span> — на несколько секунд враги пугаются и их можно съесть: 200 → 400 → 800 → 1600 очков. Съел врага — в лабиринте появится новый бонус.</p>
-          <p><b>Предмет</b> появляется дважды за уровень под домом врагов — успей схватить.</p>
-          <h3>Враги</h3>
+          <p><b>Мета:</b> збери всі сяючі точки в лабіринті й не потрап до рук ворогам.</p>
+          <p class="only-mouse"><b>Керування:</b> стрілки або WASD. Натисни стрілку заздалегідь — герой сам поверне, щойно з’явиться прохід. P або Esc — пауза.</p>
+          <p class="only-touch"><b>Керування:</b> свайпай пальцем у будь-якому місці екрана. Можна свайпнути заздалегідь — герой сам поверне, щойно з’явиться прохід.</p>
+          <p><b>Бонус</b> <span id="howto-power"></span> — на кілька секунд вороги лякаються, і їх можна з’їсти: 200 → 400 → 800 → 1600 очок. З’їв ворога — у лабіринті з’явиться новий бонус.</p>
+          <p><b>Предмет</b> з’являється двічі за рівень під будиночком ворогів — встигни схопити.</p>
+          <h3>Вороги</h3>
           <div class="enemy-list" id="enemy-list"></div>
-          <p class="note">Внешность врагов зависит от мира, а характер у каждой роли один и тот же.</p>
+          <p class="note">Зовнішність ворогів залежить від світу, а характер у кожної ролі той самий.</p>
         </div>
-        <button class="btn ghost" data-action="back">Понятно</button>
+        <button class="btn ghost" data-action="back">Зрозуміло</button>
       </div>
     </section>
 
@@ -119,40 +119,40 @@
       <div class="panel">
         <h2>Пауза</h2>
         <div class="buttons">
-          <button class="btn primary" data-action="resume">Продолжить</button>
-          <button class="btn" data-action="restart">Начать заново</button>
-          <button class="btn" data-action="settings">Настройки</button>
-          <button class="btn ghost" data-action="menu">В меню</button>
+          <button class="btn primary" data-action="resume">Продовжити</button>
+          <button class="btn" data-action="restart">Почати знову</button>
+          <button class="btn" data-action="settings">Налаштування</button>
+          <button class="btn ghost" data-action="menu">До меню</button>
         </div>
       </div>
     </section>
 
     <section class="screen" id="scr-clear">
       <div class="panel center">
-        <p class="kicker" id="clear-kicker">Уровень 1-1</p>
-        <h2 id="clear-title">Уровень пройден!</h2>
+        <p class="kicker" id="clear-kicker">Рівень 1-1</p>
+        <h2 id="clear-title">Рівень пройдено!</h2>
         <canvas id="clear-preview" class="preview"></canvas>
         <p class="sub" id="clear-text"></p>
         <p class="big-num" id="clear-score">0</p>
-        <button class="btn primary" data-action="next" id="clear-next">Дальше</button>
+        <button class="btn primary" data-action="next" id="clear-next">Далі</button>
       </div>
     </section>
 
     <section class="screen dim" id="scr-over">
       <div class="panel center">
-        <h2>Игра окончена</h2>
-        <p class="badge" id="over-record">Новый рекорд!</p>
+        <h2>Гру завершено</h2>
+        <p class="badge" id="over-record">Новий рекорд!</p>
         <p class="big-num" id="over-score">0</p>
         <p class="sub" id="over-info"></p>
         <div class="buttons">
-          <button class="btn primary" data-action="restart">Ещё раз</button>
-          <button class="btn ghost" data-action="menu">В меню</button>
+          <button class="btn primary" data-action="restart">Ще раз</button>
+          <button class="btn ghost" data-action="menu">До меню</button>
         </div>
       </div>
     </section>
   </div>
 
-  <noscript>Для игры нужен включённый JavaScript.</noscript>
+  <noscript>Для гри потрібен увімкнений JavaScript.</noscript>
   <script type="module" src="src/main.js"></script>
 </body>
 </html>

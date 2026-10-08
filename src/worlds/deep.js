@@ -1,4 +1,4 @@
-// Мир 2 — DEEP GLOW: глубина океана. Герой — рыбка-удильщик с фонариком.
+// Мир 2 — ГЛУБИНА (Deep Glow): глубина океана. Герой — рыбка-удильщик с фонариком.
 
 import { rgba, eyes, scaredFace, star, faceAngle, verticalGradient } from './common.js';
 
@@ -21,13 +21,13 @@ function sideScared(ctx, s, x, y, col) {
 
 export default {
   id: 'deep',
-  name: 'Deep Glow',
-  subtitle: 'Тёмная глубина. Собери светящийся планктон и не попадись хищникам.',
-  heroName: 'Рыбка-удильщик',
+  name: 'Глибина',
+  subtitle: 'Темна глибина океану. Збери сяючий планктон і не потрап до хижаків.',
+  heroName: 'Риба-вудильник',
   dotName: 'планктон',
-  powerName: 'Жемчужина',
-  itemName: 'Морская звезда',
-  trapName: 'облако чернил',
+  powerName: 'Перлина',
+  itemName: 'Морська зірка',
+  trapName: 'хмара чорнила',
 
   colors: {
     bgTop: '#04294a', bgBottom: '#000510', mazeBg: '#010f20',
@@ -40,7 +40,7 @@ export default {
     hunter: { name: 'Акула', color: '#ff4d6d' },
     interceptor: { name: 'Мурена', color: '#b6ff3b' },
     patrol: { name: 'Медуза', color: '#ff8de1' },
-    chaos: { name: 'Осьминог', color: '#b388ff' },
+    chaos: { name: 'Восьминіг', color: '#b388ff' },
   },
   sweep: { type: 'up', speed: 0.12, size: 0.3, alpha: 0.55, color: '#c8fff8' },
 

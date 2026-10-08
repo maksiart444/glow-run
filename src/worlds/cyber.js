@@ -1,4 +1,4 @@
-// Мир 1 — CYBER GLOW: ночной неоновый город. Герой — дрон-хакер, враги — антивирусы.
+// Мир 1 — КИБЕРГОРОД (Cyber Glow): ночной неоновый город. Герой — дрон-хакер, враги — антивирусы.
 
 import { rgba, scaredFace, star, verticalGradient } from './common.js';
 
@@ -6,13 +6,13 @@ const TAU = Math.PI * 2;
 
 export default {
   id: 'cyber',
-  name: 'Cyber Glow',
-  subtitle: 'Неоновый город. Взломай систему — собери все биты данных.',
+  name: 'Кібермісто',
+  subtitle: 'Неонове місто. Зламай систему — збери всі біти даних.',
   heroName: 'Дрон-хакер',
-  dotName: 'биты данных',
+  dotName: 'біти даних',
   powerName: 'Оверклок',
   itemName: 'Чип',
-  trapName: 'лужа помех',
+  trapName: 'калюжа перешкод',
 
   colors: {
     bgTop: '#0d0326', bgBottom: '#030108', mazeBg: '#07020f',
@@ -24,7 +24,7 @@ export default {
   enemies: {
     hunter: { name: 'Сканер', color: '#ff3860' },
     interceptor: { name: 'Файрвол', color: '#ff9f1c' },
-    patrol: { name: 'Сторож', color: '#39ff8f' },
+    patrol: { name: 'Вартовий', color: '#39ff8f' },
     chaos: { name: 'Баг', color: '#e9ff3b' },
   },
   sweep: { type: 'down', speed: 0.22, size: 0.16, alpha: 0.9, color: '#9ffcff' },

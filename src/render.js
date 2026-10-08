@@ -310,7 +310,7 @@ export class Renderer {
 
     if (game.state === 'ready' && !game.demo) {
       const spot = maze.itemSpot;
-      const text = game.stateT > TIMING.ready - 0.5 ? 'ВПЕРЁД!' : 'ГОТОВ?';
+      const text = game.stateT > TIMING.ready - 0.5 ? 'ВПЕРЕД!' : 'ГОТОВІ?';
       ctx.save();
       ctx.font = `800 ${Math.round(s * 0.8)}px "Exo 2", sans-serif`;
       ctx.textAlign = 'center';

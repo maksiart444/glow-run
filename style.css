@@ -296,6 +296,14 @@ h3 { font-size: 14px; font-weight: 800; letter-spacing: 0.14em; text-transform: 
 }
 .world-card h4 { font-family: var(--display); font-size: 14px; color: var(--card-accent); text-shadow: 0 0 10px var(--card-glow); }
 .world-card p { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+.world-card .progress {
+  position: absolute; top: 10px; left: 10px;
+  padding: 4px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.06em;
+  background: rgba(0, 0, 0, 0.55); border: 1px solid var(--line);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.world-card .progress.done { color: #0a0612; background: var(--card-accent); border-color: transparent; box-shadow: 0 0 14px var(--card-glow); }
 .world-card.locked { cursor: not-allowed; }
 .world-card.locked canvas { filter: grayscale(1) brightness(0.35); }
 .world-card .lock {

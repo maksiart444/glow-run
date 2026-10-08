@@ -1,4 +1,4 @@
-// Мир 3 — FOREST GLOW: волшебный ночной лес. Герой — светлячок.
+// Мир 3 — НОЧНОЙ ЛЕС (Forest Glow): волшебный ночной лес. Герой — светлячок.
 
 import { rgba, eyes, scaredFace, star, verticalGradient } from './common.js';
 
@@ -6,13 +6,13 @@ const TAU = Math.PI * 2;
 
 export default {
   id: 'forest',
-  name: 'Forest Glow',
-  subtitle: 'Ночной лес. Собери искры и разожги лунные цветы.',
-  heroName: 'Светлячок',
-  dotName: 'искры',
-  powerName: 'Лунный цветок',
-  itemName: 'Жёлудь',
-  trapName: 'паутина',
+  name: 'Нічний ліс',
+  subtitle: 'Чарівний нічний ліс. Збирай іскри й запалюй місячні квіти.',
+  heroName: 'Світлячок',
+  dotName: 'іскри',
+  powerName: 'Місячна квітка',
+  itemName: 'Жолудь',
+  trapName: 'павутина',
 
   colors: {
     bgTop: '#0a2416', bgBottom: '#020805', mazeBg: '#03100a',
@@ -22,10 +22,10 @@ export default {
     fright: '#5468ff', frightFlash: '#eef0ff', text: '#f1ffe9',
   },
   enemies: {
-    hunter: { name: 'Летучая мышь', color: '#ff4766' },
+    hunter: { name: 'Кажан', color: '#ff4766' },
     interceptor: { name: 'Сова', color: '#ffa53d' },
     patrol: { name: 'Лис-дух', color: '#6ff3ff' },
-    chaos: { name: 'Паук', color: '#c77dff' },
+    chaos: { name: 'Павук', color: '#c77dff' },
   },
   sweep: { type: 'pulse', speed: 1.4, size: 1, alpha: 0.35, color: '#e3ffd0' },
 
